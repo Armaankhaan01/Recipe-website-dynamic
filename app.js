@@ -30,6 +30,15 @@ app.use(fileUpload());
 app.set('layout', './layouts/main');
 app.set('view engine','ejs');
 
+
+    // Require static assets from public folder
+    app.use(express.static('public'));
+    // Set view engine as EJS
+    app.engine('ejs', require('ejs').renderFile);
+    app.set('view engine', 'ejs');
+    // Set 'views' directory for any views 
+    // being rendered res.render()
+    app.set('views');
 const routes = require('./server/routes/recipeRoutes.js');
 app.use('/', routes);
 
