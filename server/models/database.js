@@ -20,7 +20,7 @@ mongoose.set('strictQuery', true);
 
 exports.connectDB = async () => {
     try {
-      const conn = await mongoose.connect(process.env.MONGODB_URI, { usenewUrlParser: true, useUnifiedTopology: true });
+      const conn = await mongoose.connect("mongodb+srv://Armaankhaan01:Armaankhaan9694@cluster0.uqi4nn7.mongodb.net/Recipe?retryWrites=true&w=majority", { usenewUrlParser: true, useUnifiedTopology: true });
       console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
       console.log(error);
