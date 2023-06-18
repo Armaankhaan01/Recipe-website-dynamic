@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-require('dotenv');
+require('dotenv').config();
 mongoose.set('strictQuery', true);
 // mongoose.connect('mongodb://127.0.0.1/Recipe').then(()=>{
 //     console.log("MongoDB Connection Successful")
@@ -9,8 +9,7 @@ mongoose.set('strictQuery', true);
 // });
 
 // console.log(process.env.MONGODB_URI);
-
-mongoose.connect("mongodb://127.0.0.1/Recipe", { usenewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect( process.env.MONGODB_URI , { usenewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));

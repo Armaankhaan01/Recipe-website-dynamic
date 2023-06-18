@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash')
 require('./server/models/database')
 const app = express();
-require('dotenv');
+require('dotenv').config();
 const port = process.env.PORT || 3000;
 
 require('dotenv').config();

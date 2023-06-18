@@ -1,16 +1,15 @@
 {
     "version":"3",
-    "installCommand": "npm install",
     "build":[
         {
             "src": "app.js",
-            "use":"@now/node"
+            "use":"@vercel/node"
         }
     ],
     "routes":[
         {
             "src":"/(.*)",
-            "dest":"app.js"
+            "dest":"/"
         }
     ]
 }
