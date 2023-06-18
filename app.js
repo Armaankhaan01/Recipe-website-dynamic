@@ -5,6 +5,8 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash')
 require('./server/models/database')
+const database = require('./server/models/database');
+
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 3000;
@@ -33,7 +35,13 @@ app.use('/', routes);
 
 
 
-
-app.listen(port,()=>{
-    console.log(`Server Started on port no. ${port}`);
+//Connect to the database before listening
+database.connectDB().then(() => {
+    app.listen(port, () => {
+        console.log("listening for requests");
+    })
 })
+
+// app.listen(port,()=>{
+//     console.log(`Server Started on port no. ${port}`);
+// })
