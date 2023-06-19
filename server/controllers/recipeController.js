@@ -5,7 +5,7 @@ const Category = require('../models/Category');
 const Recipe = require('../models/Recipe');
 const multer = require('multer')
 const path = require('path')
-
+const { uploadFile, downloadFile } = require('../models/s3')
 // GET / Homepage
 
 exports.homepage = async (req, res) => {
@@ -144,42 +144,20 @@ const storage = multer.diskStorage({
     }
 });
 
-let upload = multer({ storage: storage }).single('image')
+let upload = multer({ storage: storage }).single("image")
 
 
 
-exports.submitRecipeOnPost =  async (req, res) => {
-    
+exports.submitRecipeOnPost = async (req, res) => {
     try {
-        const { description } = req.body;
-        let imageUploadFile;
-        let uploadPath;
-        let newImageName;
-        let img;
-        // if (!req.file || Object.keys(req.file).length === 0) {
-        //     console.log("No Files Were Uploaded");
-        // } else {
-
-        // img = (req.file) ? req.file.filename : null
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //     return res.status(400).json({ errors: errors.array() })
-        // }
-        // imageUploadFile = req.files.image;
-        // newImageName = Date.now() + '_' + file.originalname
-        // uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
-
-        // imageUploadFile.mv(uploadPath, (err) => {
-        //     if (err) return res.status(500).send(err);
-        // })
-        // }
-
-
-        console.log(req.body);
         upload(req, res, async (err) => {
             if (err) {
                 console.log(err);
             } else {
+                console.log(req.body);
+                const file = req.file
+                const result = await uploadFile(file)
+                console.log(result);
                 const newRecipe = await new Recipe({
                     name: req.body.name,
                     description: req.body.description,
@@ -192,7 +170,7 @@ exports.submitRecipeOnPost =  async (req, res) => {
                     req.flash('infoSubmit', 'Recipe has been added')
                     res.redirect('/submit-recipe');
                 }).catch((err) => {
-                     req.flash('infoErrors', error)
+                    req.flash('infoErrors', error)
                     console.log(err)
                     res.redirect('/submit-recipe')
                 })
@@ -228,7 +206,12 @@ exports.deleteRecipe = async (req, res) => {
 
 
 
+exports.images = async (req,res)=>{
+    const key = req.params.key
+    const readStream = await downloadFile(key)
+    readStream.pipe(res)
 
+}
 
 
 
