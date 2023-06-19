@@ -4,7 +4,7 @@ const S3 = require("aws-sdk/clients/s3");
 const region = process.env.AWS_REGION;
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const bucketName = process.env.AWS_BUCKET_NAME;
+const bucketName = process.env.CYCLIC_BUCKET_NAME;
 const SessionToken = process.env.AWS_SESSION_TOKEN;
 
 const s3 = new S3({
