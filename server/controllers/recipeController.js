@@ -3,7 +3,8 @@ require('../models/database');
 const { json } = require('express');
 const Category = require('../models/Category');
 const Recipe = require('../models/Recipe');
-
+const multer = require('multer')
+const path = require('path')
 
 // GET / Homepage
 
@@ -133,62 +134,95 @@ exports.submitRecipe = async (req, res) => {
 
 //POST /submit-recipe
 // Submit Recipe
-exports.submitRecipeOnPost = async (req, res) => {
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        return cb(null, path.resolve('./') + '/public/uploads/')
+    },
+    filename: function (req, file, cb) {
+        return cb(null, Date.now() + '_' + file.originalname)
+    }
+});
+
+let upload = multer({ storage: storage }).single('image')
+
+
+
+exports.submitRecipeOnPost =  async (req, res) => {
+    
     try {
+        const { description } = req.body;
         let imageUploadFile;
         let uploadPath;
         let newImageName;
-        if (!req.files || Object.keys(req.files).length === 0) {
-            console.log("No Files Were Uploaded");
-        } else {
-            imageUploadFile = req.files.image;
-            newImageName = Date.now() + imageUploadFile.name
-            uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
+        let img;
+        // if (!req.file || Object.keys(req.file).length === 0) {
+        //     console.log("No Files Were Uploaded");
+        // } else {
 
-            imageUploadFile.mv(uploadPath, (err) => {
-                if (err) return res.status(500).send(err);
-            })
-        }
+        // img = (req.file) ? req.file.filename : null
+        // const errors = validationResult(req);
+        // if (!errors.isEmpty()) {
+        //     return res.status(400).json({ errors: errors.array() })
+        // }
+        // imageUploadFile = req.files.image;
+        // newImageName = Date.now() + '_' + file.originalname
+        // uploadPath = require('path').resolve('./') + '/public/uploads/' + newImageName;
 
+        // imageUploadFile.mv(uploadPath, (err) => {
+        //     if (err) return res.status(500).send(err);
+        // })
+        // }
 
 
         console.log(req.body);
-        const newRecipe = await new Recipe({
-            name: req.body.name,
-            description: req.body.description,
-            email: req.body.email,
-            ingredients: req.body.ingredients,
-            category: req.body.category,
-            image: newImageName
-        });
-        await newRecipe.save()
+        upload(req, res, async (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                const newRecipe = await new Recipe({
+                    name: req.body.name,
+                    description: req.body.description,
+                    email: req.body.email,
+                    ingredients: req.body.ingredients,
+                    category: req.body.category,
+                    image: req.file.filename
+                });
+                await newRecipe.save().then(() => {
+                    req.flash('infoSubmit', 'Recipe has been added')
+                    res.redirect('/submit-recipe');
+                }).catch((err) => {
+                     req.flash('infoErrors', error)
+                    console.log(err)
+                    res.redirect('/submit-recipe')
+                })
+            }
+        })
 
-        
-        req.flash('infoSubmit', 'Recipe has been added')
-        res.redirect('/submit-recipe');
     } catch (error) {
         await req.flash('infoErrors', error)
+        console.log(error)
         res.redirect('/submit-recipe');
     }
 }
 
-const updateRecipe = async()=>{
+const updateRecipe = async () => {
     try {
-        const res = await Recipe.updateOne({name:'New Recipe'},{name:'New Recipe Updated'});
+        const res = await Recipe.updateOne({ name: 'New Recipe' }, { name: 'New Recipe Updated' });
         res.n; // Number of Documents Matched
         res.nModified; // Number of Documents Modified
     } catch (error) {
         console.log(error);
     }
 }
-exports.deleteRecipe = async(req, res) => {
+exports.deleteRecipe = async (req, res) => {
     const submissionId = req.params.id;
-    
-   await Recipe.findByIdAndRemove(submissionId, (error, Recipe) => {
-      if (error) {
-        return res.status(400).send({ error });
-      }
-      return res.send({ message: 'Submission deleted successfully' });
+
+    await Recipe.findByIdAndRemove(submissionId, (error, Recipe) => {
+        if (error) {
+            return res.status(400).send({ error });
+        }
+        return res.send({ message: 'Submission deleted successfully' });
     });
 }
 

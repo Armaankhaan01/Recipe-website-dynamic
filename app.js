@@ -1,9 +1,11 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
+const multer = require('multer')
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash')
+const bodyParser= require('body-parser')
 require('./server/models/database')
 const database = require('./server/models/database');
 
@@ -13,9 +15,10 @@ const port = process.env.PORT || 3000;
 
 require('dotenv').config();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(expressLayouts);
+// app.use(bodyParser.json())
 
 app.use(cookieParser('CookingBlogSecure'));
 app.use(session({
@@ -25,7 +28,7 @@ app.use(session({
 }))
 
 app.use(flash());
-app.use(fileUpload());
+// app.use(fileUpload());
 
 app.set('layout', './layouts/main');
 app.set('view engine','ejs');

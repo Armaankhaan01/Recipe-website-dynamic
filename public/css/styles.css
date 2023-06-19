@@ -41,5 +41,5 @@
   
   .category__img img {
     width: 100%;
-    object-fit: cover;
+    object-fit:contain  !important;
   }

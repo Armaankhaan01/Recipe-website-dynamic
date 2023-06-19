@@ -35,7 +35,7 @@ function deleteSubmission(id) {
   
 // create the delete button
 const deleteButton = document.getElementById('deleteBtn');
-deleteButton.innerHTML ="ark"
-deleteButton.addEventListener('click', () => {
-  deleteSubmission();
-});
+// deleteButton.innerHTML ="ark"
+// deleteButton.addEventListener('click', () => {
+//   deleteSubmission();
+// });
