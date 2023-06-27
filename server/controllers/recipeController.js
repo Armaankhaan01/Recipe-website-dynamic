@@ -7,18 +7,21 @@ const AWS = require("aws-sdk");
 const multerS3 = require("multer-s3");
 require("dotenv").config();
 
-const region = process.env.AWS_REGION;
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const bucketName = process.env.CYCLIC_BUCKET_NAME;
-const sessionToken = process.env.AWS_SESSION_TOKEN;
 
-AWS.config.update({
-  accessKeyId: accessKeyId,
-  secretAccessKey: secretAccessKey,
-  region: region,
-  sessionToken: sessionToken,
-});
+// configuration not required in deployment
+
+// const region = process.env.AWS_REGION;
+// const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+// const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+const bucketName = process.env.CYCLIC_BUCKET_NAME;
+// const sessionToken = process.env.AWS_SESSION_TOKEN;
+
+// AWS.config.update({
+//   accessKeyId: accessKeyId,
+//   secretAccessKey: secretAccessKey,
+//   region: region,
+//   sessionToken: sessionToken,
+// });
 
 const s3 = new AWS.S3({
   params: { Bucket: bucketName },
