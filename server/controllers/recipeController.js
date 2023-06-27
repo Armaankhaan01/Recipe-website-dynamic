@@ -1,5 +1,4 @@
 require("../models/database");
-
 const { json } = require("express");
 const Category = require("../models/Category");
 const Recipe = require("../models/Recipe");
@@ -11,7 +10,7 @@ require("dotenv").config();
 const region = process.env.AWS_REGION;
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const bucketName = process.env.AWS_BUCKET_NAME;
+const bucketName = process.env.CYCLIC_BUCKET_NAME;
 const sessionToken = process.env.AWS_SESSION_TOKEN;
 
 AWS.config.update({
