@@ -1,21 +1,27 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
-// const fileUpload = require('express-fileupload');
-const multer = require('multer')
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash')
 const bodyParser= require('body-parser')
 require('./server/models/database')
 const database = require('./server/models/database');
+// Node.js program to demonstrate the
+// Process 'warning' Event
+
+// Importing process module
+const process = require('process');
+
+// Event 'warning'
+process.on('warning', (warning) => {
+console.warn("warning stacktrace - " + warning.stack)
+});
 
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 3000;
 
-require('dotenv').config();
-
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(expressLayouts);
 // app.use(bodyParser.json())
