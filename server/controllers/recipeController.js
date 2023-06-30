@@ -10,11 +10,11 @@ require("dotenv").config();
 
 // configuration not required in deployment of cyclic but required in vercel
 
-const region = process.env.AWS_REGION;
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-const bucketName = process.env.AWS_BUCKET_NAME;
-// const sessionToken = process.env.AWS_SESSION_TOKEN;
+const region = process.env.REGION;
+const accessKeyId = process.env.ACCESS_KEY_ID;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+const bucketName = process.env.BUCKET_NAME;
+// const sessionToken = process.env.SESSION_TOKEN;
 
 AWS.config.update({
   accessKeyId: accessKeyId,
