@@ -219,7 +219,7 @@ exports.submitRecipeOnPost = async (req, res) => {
     console.log(fileOriginalName);
     const str = req.file.location;
     const specificWord =
-      "https://cyclic-embarrassed-ray-battledress-eu-west-1.s3.eu-west-1.amazonaws.com/";
+      "https://recipeblogwebsite.s3.ap-south-1.amazonaws.com/";
     const lastPart = str.split(specificWord).pop();
     const filename = lastPart.trim();
     console.log(req.body);
