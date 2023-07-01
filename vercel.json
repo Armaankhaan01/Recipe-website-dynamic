@@ -5,7 +5,8 @@
     { "src": "public/**", "use": "@vercel/static" }
   ],
   "routes": [
+    {"handle": "filesystem"},
     { "src": "/(.*)", "dest": "/index.js" },
-    { "src": "/(.*)", "dest": "/public/$1" }
+    { "src": "/css/(.*)", "dest": "/public/css/$1" }
   ]
 }
